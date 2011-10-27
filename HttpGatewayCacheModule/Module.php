@@ -32,8 +32,8 @@ class Module
         $this->initAutoloader();
         
         $events = StaticEventManager::getInstance();
-        $events->attach('route', array($this, 'onRoute'), 100);
-        $events->attach('finish', array($this, 'beforeFinish'), -100);
+        $events->attach('route', 'route', array($this, 'onRoute'), 100);
+        $events->attach('finish', 'finish', array($this, 'beforeFinish'), -100);
     }
 
     /**
