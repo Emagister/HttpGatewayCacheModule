@@ -5,20 +5,20 @@
  */
 namespace Emagister;
 use Zend\Stdlib\RequestDescription,
-    Zend\Stdlib\ResponseDescription,
-    Zend\Stdlib\Request,
-    Zend\Stdlib\Response,
     Zend\Stdlib\Parameters,
+    Zend\Uri\UriFactory,
+    Zend\Cache\Cache,
     Zend\Mvc\AppContext;
 
 /**
  * A reverse proxy cache written on top of Zend Framework 2
  *
  * @uses       \Zend\Stdlib\RequestDescription
+ * @uses       \Zend\Stdlib\Parameters
+ * @uses       \Zend\Uri\UriFactory
  * @uses       \Zend\Cache\Cache
- * @uses       \Zend\Controller\Request\AbstractRequest
- * @uses       \Zend\Controller\Response\AbstractResponse
- * @category   Emagister
+ * @uses       \Zend\Mvc\AppContext
+ * @category   EmagisterPlugins
  * @package    Emagister
  * @author     Christian Soronellas <csoronellas@emagister.com>
  */
@@ -27,7 +27,7 @@ class HttpGatewayCache
     /**
      * The cache object instance
      * 
-     * @var Zend\Cache\Frontend
+     * @var Zend\Cache\Cache
      */
     protected $_cache;
     
@@ -50,7 +50,7 @@ class HttpGatewayCache
      * 
      * @param Zend\Cache\Cache $cache
      */
-    public function __construct(\Zend\Cache\Cache $cache)
+    public function __construct(Cache $cache)
     {
         $this->_cache = $cache;
     }
@@ -182,7 +182,7 @@ class HttpGatewayCache
         $request = clone $currentRequest;
         $request->setEnv(new Parameters($_ENV))
                 ->setServer(new Parameters($_SERVER))
-                ->setUri(\Zend\Uri\UriFactory::factory($uri));
+                ->setUri(UriFactory::factory($uri));
         
         if (isset($_SERVER['REQUEST_METHOD'])) {
             $request->setMethod($_SERVER['REQUEST_METHOD']);
