@@ -32,8 +32,8 @@ class Module
         $this->initAutoloader();
         
         $events = StaticEventManager::getInstance();
-        $events->attach('bootstrap', 'bootstrap', array($httpGateway, 'onBootstrap'), 100);
-        $events->attach('finish', array($httpGateway, 'afterDispatch'), -100);
+        $events->attach('route', array($this, 'onRoute'), 100);
+        $events->attach('finish', array($this, 'beforeFinish'), -100);
     }
 
     /**
