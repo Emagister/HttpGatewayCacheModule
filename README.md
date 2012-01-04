@@ -111,3 +111,6 @@ From some view
   ); ?>
 </div>
 ```
+
+* * *
+Note: This module is still highly experimental! Not ready for production use!
