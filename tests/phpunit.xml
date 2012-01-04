@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true"
+         bootstrap="./bootstrap.php"
+         stopOnError="true"
+         stopOnFailure="true">
+    
+    <!-- Test suites -->
+    <testsuites>
+        <testsuite name="HttpGatewayCacheModule">
+            <directory>./</directory>
+        </testsuite>
+    </testsuites>
+    
+</phpunit>
