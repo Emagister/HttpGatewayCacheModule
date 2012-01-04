@@ -137,16 +137,16 @@ class Processor
     protected function _performInternalEsiRequest($uri)
     {
         // Try to reach the the URI specified at src param
-        $this->_request->setUri(UriFactory::factory($uri));
+        $request = new Request();
+        $request->setUri(UriFactory::factory($uri));
 
-        $this->_request->headers()->addHeaderLine('Surrogate-Capability: zfcache="ZendHttpGatewayCache/1.0 ESI/1.0"');
+        $request->headers()->addHeaderLine('Surrogate-Capability: zfcache="ZendHttpGatewayCache/1.0 ESI/1.0"');
 
         $currentRequest = $this->_application->getRequest();
-        $response = $this->_application->setRequest($this->_request)
+        $response = $this->_application->setRequest($request)
                                        ->run();
 
         $this->_application->setRequest($currentRequest);
-        $this->setRequest(new Request());
 
         return $response;
     }
