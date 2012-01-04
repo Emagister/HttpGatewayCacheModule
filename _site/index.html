@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/Product">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta itemprop="name" content="HttpGatewayCacheModule">
+		<meta itemprop="description" content="A reverse proxy cache for Zend Framework 2 applications">
+		<title>HttpGatewayCacheModule</title>
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<link href='http://fonts.googleapis.com/css?family=Basic' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="css/gh-buttons.css" />
+		<link rel="stylesheet" type="text/css" href="css/pygments.css" />
+		<style type="text/css">
+            #container{width:50%;margin:0 auto;padding:1em 0;}
+            #footer{margin-top:1.2em;border-top:1px solid #cccccc;}
+			#footer p{margin:0;padding:.5em 0 0 0;text-align:right;font-size:x-small;}
+            h1,h2,h3{font-family:Basic, sans-serif !important;}
+            h1{text-align:center;margin:0;}
+            small{display:block;text-align:center;}
+            #fork-me{position:absolute;left:0;top:0;}
+            p{text-align:justify;}
+			.highlight{border-radius:15px;-moz-border-radius:15px;background:black;font-family:Monaco,Bitstream Vera Sans Mono,monospace !important;font-size:.9em;}
+			.highlight pre{padding:1em;}
+			.highlight .bash{color:white;}
+			.share-buttons{overflow:hidden;}
+			.share-button{float:left;margin-left:1em;}
+			.share-button.no-margin{margin-left:0 !important;}
+			#fb-root{display:none;width:75px;}
+        </style>
+	</head>
+	<body>
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/es_LA/all.js#xfbml=1";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+		
+		<div id="fork-me">
+			<a href="https://github.com/Emagister/HttpGatewayCacheModule"><img alt="fork me on github" src="css/ForkMe_Blk.png" /></a>
+		</div>
+		<div id="page">
+			<div id="container">
+				<h1>HttpGatewayCacheModule</h1>
+				<small>a reverse proxy cache for Zend Framework 2 applications</small>
+				<h2 id='what'>What?</h2>
+
+<p>HttpGatewayCacheModule is a small Zend Framework 2 module that will act as a <a href='http://en.wikipedia.org/wiki/Reverse_proxy'>reverse proxy cache</a> for your Zend Framework 2 application.</p>
+
+<h2 id='how'>How?</h2>
+
+<p>HttpGatewayCacheModule uses the standard Zend Framework 2 event system to hook on the application route event and on the finish event.</p>
+
+<p>It acts as much as a page cache but with ESI tag support. So it allows to have different expiration times for different parts of the page. The current implementation only supports the &#60;esi:include /&#62; tag.</p>
+
+<h2 id='where'>Where?</h2>
+<a href='#' class='button big icon fork'>Download from Github!</a>
+<h2 id='how_to_use_it'>How to use it?</h2>
+
+<h3 id='install_it'>Install it</h3>
+
+<p>You can clone it or download it to your &#8220;module&#8221; directory.</p>
+<div class='highlight'><pre><code class='bash'><span class='nv'>$ </span><span class='nb'>cd</span> /your/zend/framework/app/module
+<span class='nv'>$ </span>git clone https://github.com/Emagister/HttpGatewayCacheModule
+</code></pre>
+</div>
+<h3 id='configure_it'>Configure it</h3>
+
+<p>Edit the file &#8220;module.config.php&#8221; under the HttpGatewayCacheModule&#8217;s configs folder and update the <em>&#8220;cacheoptions&#8221;</em> and <em>&#8220;cache&#8221;</em> sections to fit your needs.</p>
+<div class='highlight'><pre><code class='php'><span class='cp'>&lt;?php</span>
+<span class='k'>return</span> <span class='k'>array</span><span class='p'>(</span>
+  <span class='o'>...</span>
+  <span class='s1'>&#39;di&#39;</span> <span class='o'>=&gt;</span> <span class='k'>array</span><span class='p'>(</span>
+    <span class='s1'>&#39;alias&#39;</span> <span class='o'>=&gt;</span> <span class='k'>array</span><span class='p'>(</span>
+      <span class='o'>...</span>
+      <span class='s1'>&#39;cache_options&#39;</span> <span class='o'>=&gt;</span> <span class='s1'>&#39;Zend\Cache\Storage\Adapter\ApcOptions&#39;</span><span class='p'>,</span>
+      <span class='s1'>&#39;cache&#39;</span>         <span class='o'>=&gt;</span> <span class='s1'>&#39;Zend\Cache\Storage\Adapter\Apc&#39;</span>
+    <span class='p'>),</span>
+    <span class='s1'>&#39;instance&#39;</span> <span class='o'>=&gt;</span> <span class='k'>array</span><span class='p'>(</span>
+      <span class='o'>...</span>
+      <span class='s1'>&#39;cache_options&#39;</span> <span class='o'>=&gt;</span> <span class='k'>array</span><span class='p'>(</span>
+        <span class='s1'>&#39;parameters&#39;</span> <span class='o'>=&gt;</span> <span class='k'>array</span><span class='p'>(</span>
+          <span class='s1'>&#39;cfg&#39;</span> <span class='o'>=&gt;</span> <span class='k'>array</span><span class='p'>(</span>
+            <span class='s1'>&#39;ttl&#39;</span> <span class='o'>=&gt;</span> <span class='mi'>3600</span>
+          <span class='p'>)</span>
+        <span class='p'>)</span>
+      <span class='p'>),</span>
+      <span class='s1'>&#39;cache&#39;</span> <span class='o'>=&gt;</span> <span class='k'>array</span><span class='p'>(</span>
+        <span class='s1'>&#39;parameters&#39;</span> <span class='o'>=&gt;</span> <span class='k'>array</span><span class='p'>(</span>
+          <span class='s1'>&#39;options&#39;</span> <span class='o'>=&gt;</span> <span class='s1'>&#39;cache_options&#39;</span>
+        <span class='p'>)</span>
+      <span class='p'>)</span>
+    <span class='p'>)</span>
+  <span class='p'>)</span>
+<span class='p'>);</span>
+</code></pre>
+</div>
+<p>Now edit the file &#8220;application.config.php&#8221; and add the module to the bootstrap phase</p>
+<div class='highlight'><pre><code class='php'><span class='cp'>&lt;?php</span>
+<span class='k'>return</span> <span class='k'>array</span><span class='p'>(</span>
+  <span class='s1'>&#39;modules&#39;</span> <span class='o'>=&gt;</span> <span class='k'>array</span><span class='p'>(</span>
+    <span class='o'>...</span>
+    <span class='s1'>&#39;HttpGatewayCacheModule&#39;</span>
+  <span class='p'>),</span>
+<span class='p'>);</span>
+</code></pre>
+</div>
+<h3 id='use_it'>Use it</h3>
+
+<p>From some controller</p>
+<div class='highlight'><pre><code class='php'><span class='cp'>&lt;?php</span>
+
+<span class='k'>namespace</span> <span class='nx'>Album\Controller</span><span class='p'>;</span>
+
+<span class='k'>use</span> <span class='nx'>Zend\Mvc\Controller\ActionController</span><span class='p'>,</span>
+    <span class='nx'>Album\Model\AlbumTable</span><span class='p'>,</span>
+    <span class='nx'>Album\Form\AlbumForm</span><span class='p'>;</span>
+
+<span class='k'>class</span> <span class='nc'>AlbumController</span> <span class='k'>extends</span> <span class='nx'>ActionController</span>
+<span class='p'>{</span>
+  <span class='sd'>/**</span>
+<span class='sd'>   * @var \Album\Model\AlbumTable</span>
+<span class='sd'>   */</span>
+  <span class='k'>protected</span> <span class='nv'>$albumTable</span><span class='p'>;</span>
+
+  <span class='k'>public</span> <span class='k'>function</span> <span class='nf'>indexAction</span><span class='p'>()</span>
+  <span class='p'>{</span>
+    <span class='k'>return</span> <span class='k'>array</span><span class='p'>(</span>
+      <span class='s1'>&#39;albums&#39;</span> <span class='o'>=&gt;</span> <span class='nv'>$this</span><span class='o'>-&gt;</span><span class='na'>albumTable</span><span class='o'>-&gt;</span><span class='na'>fetchAll</span><span class='p'>(),</span>
+    <span class='p'>);</span>
+  <span class='p'>}</span>
+<span class='p'>}</span>
+</code></pre>
+</div>
+<p>From some view</p>
+<div class='highlight'><pre><code class='php'><span class='x'>&lt;div class=&quot;container&quot;&gt;</span>
+<span class='x'>  </span><span class='cp'>&lt;?php</span> <span class='k'>echo</span> <span class='nv'>$this</span><span class='o'>-&gt;</span><span class='na'>esi</span><span class='p'>(</span>
+    <span class='nv'>$this</span><span class='o'>-&gt;</span><span class='na'>url</span><span class='p'>(</span>
+      <span class='s1'>&#39;my_route&#39;</span><span class='p'>,</span>
+      <span class='k'>array</span><span class='p'>(</span>
+        <span class='s1'>&#39;param1&#39;</span> <span class='o'>=&gt;</span> <span class='s1'>&#39;param1Value&#39;</span><span class='p'>,</span>
+        <span class='s1'>&#39;param2&#39;</span> <span class='o'>=&gt;</span> <span class='s1'>&#39;param2Value&#39;</span>
+      <span class='p'>)</span>
+    <span class='p'>)</span>
+  <span class='p'>);</span> <span class='cp'>?&gt;</span><span class='x' />
+<span class='x'>&lt;/div&gt;</span>
+</code></pre>
+</div>
+<h2 id='love_it'>Love it</h2>
+<div class='share-buttons'>
+	<div class='share-button no-margin twitter'>
+		<a href='https://twitter.com/share' data-url='http://github.com/Emagister/HttpGatewayCacheModule' class='twitter-share-button' data-hashtags='emagister,esi,zf2,rigor' data-count='vertical' data-lang='en' data-related='EmagisterTech:Engineering Emagister,emagister'>Tweet</a>
+		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+	</div>
+	<div class='share-button facebook'>
+		<div class='fb-like' data-send='false' data-width='75' data-layout='box_count' data-href='http://github.com/Emagister/HttpGatewayCacheModule' data-show-faces='false' />
+	</div>
+</div>
+			</div>
+			<div id="footer">
+				<p>
+					Brought to you by the wonderful tech team of<br />
+					<a href="http://engineering.emagister.com"><img alt="emagister.com" src="img/emagister.gif"></a>
+				</p>
+			</div>
+		</div>
+	</body>
+</html>
