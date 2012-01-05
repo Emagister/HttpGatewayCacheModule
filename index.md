@@ -6,7 +6,6 @@ subtitle: a reverse proxy cache for Zend Framework 2 applications
 ## What?
 HttpGatewayCacheModule is a small Zend Framework 2 module that will act as a [reverse proxy cache](http://en.wikipedia.org/wiki/Reverse_proxy)
 for your Zend Framework 2 application.
-
 ## How?
 HttpGatewayCacheModule uses the standard Zend Framework 2 event system to hook on the application route event and on the finish event.
 
