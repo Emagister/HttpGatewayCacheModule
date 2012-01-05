@@ -4,7 +4,6 @@ namespace Emagister\Esi;
 
 use Zend\Http\PhpEnvironment\Request,
     Zend\Stdlib\RequestDescription,
-    Zend\Uri\UriFactory,
     Zend\Mvc\AppContext;
 
 /**
@@ -17,41 +16,37 @@ use Zend\Http\PhpEnvironment\Request,
 class Processor
 {
     /**
-     * The internal request instance, used to perform ESI requests
+     * The internal Request
      *
-     * @var Zend\Stdlib\RequestDescription
+     * @var \Zend\Stdlib\RequestDescription
      */
     private $_request;
 
     /**
      * The Zend MVC Application instance
      *
-     * @var Zend\Mvc\AppContext
+     * @var \Zend\Mvc\AppContext
      */
     private $_application;
 
     /**
-     * Gets the request instance
-     *
-     * @return Zend\Stdlib\RequestDescription
-     */
-    public function getRequest()
-    {
-        if (null === $this->_request) {
-            $this->setRequest(new Request());
-        }
-
-        return $this->_request;
-    }
-
-    /**
-     * Sets the request instance
-     *
-     * @param Zend\Stdlib\RequestDescription $request
+     * @param \Zend\Stdlib\RequestDescription $request
      */
     public function setRequest(RequestDescription $request)
     {
         $this->_request = $request;
+    }
+
+    /**
+     * @return \Zend\Stdlib\RequestDescription
+     */
+    public function getRequest()
+    {
+        if (null === $this->_request) {
+            $this->_request = new Request();
+        }
+
+        return $this->_request;
     }
 
     /**
@@ -137,8 +132,8 @@ class Processor
     protected function _performInternalEsiRequest($uri)
     {
         // Try to reach the the URI specified at src param
-        $request = new Request();
-        $request->setUri(UriFactory::factory($uri));
+        $request = $this->getRequest();
+        $request->setUri($uri);
 
         $request->headers()->addHeaderLine('Surrogate-Capability: zfcache="ZendHttpGatewayCache/1.0 ESI/1.0"');
 
@@ -147,6 +142,7 @@ class Processor
                                        ->run();
 
         $this->_application->setRequest($currentRequest);
+        $this->setRequest(new Request());
 
         return $response;
     }

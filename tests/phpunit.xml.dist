@@ -10,5 +10,9 @@
             <directory>./</directory>
         </testsuite>
     </testsuites>
-    
+
+    <php>
+        <!-- Here you will have to set the path to your ZF2 directory -->
+        <env name="ZF2_PATH" value="/path/to/your/zf2/library/folder" />
+    </php>
 </phpunit>
