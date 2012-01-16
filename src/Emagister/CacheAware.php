@@ -6,7 +6,7 @@ use Zend\Cache\Storage\Adapter;
 /**
  * Injects a cache adapter interface
  */
-interface CacheAwareInterface
+interface CacheAware
 {
     public function injectCache(Adapter $cache);
 }

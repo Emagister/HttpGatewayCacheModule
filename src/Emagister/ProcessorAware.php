@@ -7,7 +7,7 @@ namespace Emagister;
  * 
  * @author Christian Soronellas <csoronellas@emagister.com>
  */
-interface ProcessorAwareInterface
+interface ProcessorAware
 {
     public function injectProcessor(Esi\Processor $processor);
 }

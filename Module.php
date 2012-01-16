@@ -66,6 +66,11 @@ class Module implements AutoloaderProvider
         return include __DIR__ . '/config/module.config.php';
     }
 
+    /**
+     * The bootstrap evnt handler
+     *
+     * @param \Zend\EventManager\Event $e
+     */
     public function bootstrap(Event $e)
     {
         $this->_application = $e->getParam('application');
@@ -84,9 +89,12 @@ class Module implements AutoloaderProvider
         $di = $this->_application->getLocator();
         $httpGatewayCache = $di->get('emagister_httpgatewaycache');
 
-        if (true === $httpGatewayCache->preDispatch($this->_application)) {
+        $response = $httpGatewayCache->preDispatch($this->_application);
+        if (null !== $response) {
             // We should return here the response back to the client
-            $e->stopPropagation();
+            $e->setResponse($response);
+            $e->stopPropagation(true);
+            return $response;
         }
     }
 
@@ -100,6 +108,7 @@ class Module implements AutoloaderProvider
     {
         $di = $this->_application->getLocator();
         $httpGatewayCache = $di->get('emagister_httpgatewaycache');
-        $httpGatewayCache->postDispatch();
+
+        return $httpGatewayCache->postDispatch($e);
     }
 }

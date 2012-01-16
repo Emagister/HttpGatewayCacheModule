@@ -9,7 +9,6 @@ use Emagister\Esi\Processor;
 class ProcessorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * The system under test
      *
      * @var Emagister\Esi\Processor
      */
