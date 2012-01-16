@@ -1,6 +1,6 @@
 [submodule "vendor/ZendFramework"]
 	path = vendor/ZendFramework
-	url = https://github.com/zendframework/zf2
+	url = https://github.com/zendframework/zf2.git
 [submodule "module/HttpGatewayCacheModule"]
 	path = module/HttpGatewayCacheModule
-	url = https://github.com/Emagister/HttpGatewayCacheModule
+	url = git://github.com/Emagister/HttpGatewayCacheModule.git
