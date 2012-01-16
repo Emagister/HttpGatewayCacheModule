@@ -13,7 +13,7 @@ CREATE TABLE album (
 );
 
 INSERT INTO album (artist, title) VALUES ('Coldplay', 'Mylo Xyloto');
-INSERT INTO album (artist, title) VALUES ('Noel Gallagher', 'Noel Gallagher\'s High Flying Birds!');
+INSERT INTO album (artist, title) VALUES ('Noel Gallagher', "Noel Gallagher\'s High Flying Birds!");
 INSERT INTO album (artist, title) VALUES ('Adele', '21');
 INSERT INTO album (artist, title) VALUES ('Matt Cardle', 'Letters');
 INSERT INTO album (artist, title) VALUES ('Steps', 'The Ultimate Collection');
@@ -41,7 +41,28 @@ return array(
                     ),
                 ),
             ),
+            ...
         )
     )
 );
 ```
+
+### Web server
+The recommended setup for ```Apache``` web server would be adding this VHost definition to your vhosts file
+
+```apache
+<VirtualHost *:80>
+  ServerName zf2-tutorial.localhost
+  DocumentRoot /path/to/zf-2tutorial/public
+  SetEnv APPLICATION_ENV "development"
+
+  <Directory /path/to/zf2-tutorial/public>
+    DirectoryIndex index.php
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+  </Directory>
+</VirtualHost>
+```
+
+And then that's it. The functional test can be accessed through [http://zf2-tutorial.localhost]
