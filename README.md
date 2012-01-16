@@ -65,4 +65,9 @@ The recommended setup for ```Apache``` web server would be adding this VHost def
 </VirtualHost>
 ```
 
-And then that's it. The functional test can be accessed through [http://zf2-tutorial.localhost]
+### HttpGatewayCacheModule config
+As told in the README.md on the master branch, to configure the module you will need to edit the ```module/HttpGatewayCacheModule/config/module.config.php``` file
+to configure the cache layer to fit your needs. The current config uses APC as a backend cache.
+
+## That's it!
+And then that's it. The functional test can be accessed through http://zf2-tutorial.localhost
