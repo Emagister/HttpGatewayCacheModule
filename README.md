@@ -1,7 +1,20 @@
 # HttpGatewayCacheModule functional test
 This is a functional test for the ```HttpGatewayCacheModule``` based on the [ZF2 tutorial](https://github.com/akrabat/zf2-tutorial) by Rob Alen.
 ## How to get started ?
-### Database
+
+### Clone it!
+
+```sh
+git clone git://github.com/Emagister/HttpGatewayCacheModule.git
+cd HttpGatewayCacheModule
+git fetch
+git checkout --track origin/functional-test
+git submodule init
+git submodule update
+```
+
+### Setup the database
+
 In order to get this test up and running you will need to set up a database and run this queries
 
 ```sql
@@ -47,7 +60,8 @@ return array(
 );
 ```
 
-### Web server
+### Set up the web server
+
 The recommended setup for ```Apache``` web server would be adding this VHost definition to your vhosts file
 
 ```apache
@@ -65,7 +79,8 @@ The recommended setup for ```Apache``` web server would be adding this VHost def
 </VirtualHost>
 ```
 
-### HttpGatewayCacheModule config
+### Set up HttpGatewayCacheModule config
+
 As told in the README.md on the master branch, to configure the module you will need to edit the ```module/HttpGatewayCacheModule/config/module.config.php``` file
 to configure the cache layer to fit your needs. The current config uses APC as a backend cache.
 
