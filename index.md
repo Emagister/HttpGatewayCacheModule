@@ -4,20 +4,26 @@ title: HttpGatewayCacheModule
 subtitle: a reverse proxy cache for Zend Framework 2 applications
 ---
 ## What?
+
 HttpGatewayCacheModule is a small Zend Framework 2 module that will act as a [reverse proxy cache](http://en.wikipedia.org/wiki/Reverse_proxy)
 for your Zend Framework 2 application.
+
 ## How?
+
 HttpGatewayCacheModule uses the standard Zend Framework 2 event system to hook on the application route event and on the finish event.
 
 It acts as much as a page cache but with ESI tag support. So it allows to have different expiration times for different parts of
 the page. The current implementation only supports the &lt;esi:include /&gt; tag.
 
 ## Where?
-<a href="#" class="button big icon fork">Download from Github!</a>
+
+<a href="https://github.com/Emagister/HttpGatewayCacheModule/zipball/master" class="button big icon fork">Download from Github!</a>
 
 ## How to use it?
+
 ###Install it
-You can clone it or download it to your "module" directory.
+
+You can clone it or download it to your "vendor" directory (you can add it as a submodule).
 
 {% highlight bash %}
 $ cd /your/zend/framework/app/module
@@ -25,6 +31,7 @@ $ git clone https://github.com/Emagister/HttpGatewayCacheModule
 {% endhighlight %}
 
 ### Configure it
+
 Edit the file "module.config.php" under the HttpGatewayCacheModule's configs folder and update the _"cacheoptions"_ and _"cache"_
 sections to fit your needs.
 
@@ -70,6 +77,7 @@ return array(
 {% endhighlight %}
 
 ### Use it
+
 From some controller
 
 {% highlight php %}
@@ -114,4 +122,5 @@ From some view
 {% endhighlight %}
 
 ## Love it
+
 {% include share-buttons.html %}
