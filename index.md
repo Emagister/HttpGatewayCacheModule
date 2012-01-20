@@ -3,6 +3,7 @@ layout: main
 title: HttpGatewayCacheModule
 subtitle: a reverse proxy cache for Zend Framework 2 applications
 ---
+
 ## What?
 
 HttpGatewayCacheModule is a small Zend Framework 2 module that will act as a [reverse proxy cache](http://en.wikipedia.org/wiki/Reverse_proxy)
@@ -26,7 +27,7 @@ the page. The current implementation only supports the &lt;esi:include /&gt; tag
 You can clone it or download it to your "vendor" directory (you can add it as a submodule).
 
 {% highlight bash %}
-$ cd /your/zend/framework/app/module
+$ cd /your/zend/framework/app/vendor
 $ git clone https://github.com/Emagister/HttpGatewayCacheModule
 {% endhighlight %}
 
