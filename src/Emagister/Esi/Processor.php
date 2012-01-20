@@ -5,7 +5,8 @@ namespace Emagister\Esi;
 use Zend\Http\PhpEnvironment\Request,
     Zend\Http\PhpEnvironment\Response,
     Zend\Stdlib\RequestDescription,
-    Zend\Mvc\AppContext;
+    Zend\Mvc\AppContext,
+    Zend\Mvc\MvcEvent;
 
 /**
  * An ESI tag processor
@@ -60,7 +61,7 @@ class Processor
     /**
      * Application's getter
      *
-     * @return Zend\Mvc\AppContext
+     * @return \Zend\Mvc\Application
      */
     public function getApplication()
     {
@@ -70,7 +71,7 @@ class Processor
     /**
      * Application's setter
      *
-     * @param Zend\Mvc\AppContext $application
+     * @param \Zend\Mvc\AppContext $application
      */
     public function setApplication(AppContext $application)
     {
@@ -99,6 +100,8 @@ class Processor
 
 	/**
      * Search for any esi include, and replace by its content
+     *
+     * @param string $content The content to be checked
      *
      * @return string
      */
@@ -159,23 +162,40 @@ class Processor
      */
     protected function _performInternalEsiRequest($uri)
     {
-        // Try to reach the the URI specified at src param
-        $newRequest = $this->getRequest();
-        $newRequest->setUri($uri);
-        $newRequest->setRequestUri($uri);
+        $events = $this->getApplication()->events();
+        $event  = new MvcEvent();
+        $event->setTarget($this->getApplication());
 
+        // Prepare the request
+        $request = $this->getRequest();
+        $request->setUri($uri);
+        $request->setRequestUri($uri);
+        $request->headers()->addHeaderLine('Surrogate-Capability: zfcache="ZendHttpGatewayCache/1.0 ESI/1.0"');
 
-        $newRequest->headers()->addHeaderLine('Surrogate-Capability: zfcache="ZendHttpGatewayCache/1.0 ESI/1.0"');
+        $event->setRequest($request)
+              ->setRouter($this->getApplication()->getRouter());
 
-        $currentRequest = $this->_application->getRequest();
+        $result = $events->trigger('route', $event, function ($r) {
+            return ($r instanceof Response);
+        });
 
-        $newResponse = $this->_application->setRequest($newRequest)
-                                          ->run();
+        if ($result->stopped()) {
+            $response = $result->last();
+            return $response;
+        }
 
-        $this->_application->setRequest($currentRequest);
+        $result = $events->trigger('dispatch', $event, function ($r) {
+            return ($r instanceof Response);
+        });
 
-        $this->setRequest(new Request());
+        $response = $result->last();
+        if (!$response instanceof Response) {
+            $response = $this->getResponse();
+            $event->setResponse($response);
+        }
 
-        return $newResponse;
+        $events->trigger('finish', $event);
+
+        return $response;
     }
 }

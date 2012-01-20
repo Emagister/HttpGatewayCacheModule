@@ -8,7 +8,8 @@ use Zend\Cache\Storage\Adapter as CacheAdapter,
     Zend\Stdlib\RequestDescription,
     Zend\Http\Header\CacheControl,
     Zend\Mvc\AppContext,
-    Zend\Mvc\MvcEvent;
+    Zend\Mvc\MvcEvent,
+    Zend\Http\PhpEnvironment\Response;
 
 /**
  * A reverse proxy cache written on top of Zend Framework 2
@@ -26,7 +27,7 @@ class HttpGatewayCache implements CacheAware, ProcessorAware
     /**
      * The cache object instance
      *
-     * @var Zend\Cache\Storage\Adapter
+     * @var \Zend\Cache\Storage\Adapter
      */
     protected $_cache;
 
@@ -40,19 +41,19 @@ class HttpGatewayCache implements CacheAware, ProcessorAware
     /**
      * The application instance
      *
-     * @var Zend\Mvc\AppContext
+     * @var \Zend\Mvc\AppContext
      */
     protected $_application;
 
     /**
      * An ESI processor instance
      *
-     * @var Emagister\Esi\Processor
+     * @var \Emagister\Esi\Processor
      */
     protected $_processor;
 
     /**
-     * @return Zend\Mvc\AppContext
+     * @return \Zend\Mvc\AppContext
      */
     public function getApplication()
     {
@@ -69,7 +70,7 @@ class HttpGatewayCache implements CacheAware, ProcessorAware
 
     /**
      * (non-PHPdoc)
-     * @see Emagister.CacheAware::injectCache()
+     * @see \Emagister\CacheAware::injectCache()
      */
     public function injectCache(\Zend\Cache\Storage\Adapter $cache)
     {
@@ -78,7 +79,7 @@ class HttpGatewayCache implements CacheAware, ProcessorAware
 
     /**
      * (non-PHPdoc)
-     * @see Emagister.ProcessorAware::injectProcessor()
+     * @see \Emagister\ProcessorAware::injectProcessor()
      */
     public function injectProcessor(Esi\Processor $processor)
     {
@@ -108,16 +109,17 @@ class HttpGatewayCache implements CacheAware, ProcessorAware
      * @param \Zend\Mvc\AppContext $application
      * @return boolean
      */
-    public function preDispatch(AppContext $application)
+    public function preDispatch(MvcEvent $e)
     {
-        $this->setApplication($application);
-        $this->_processor->setApplication($application);
+        $this->_processor->setApplication($this->getApplication());
 
-        $request = $this->_application->getRequest();
-        $response = $this->_application->getResponse();
+        $request = $e->getRequest();
         $cacheKey = $this->_getCacheKey($request);
 
         if (false !== ($cachedResponse = $this->_cache->getItem($cacheKey))) {
+            // The response is cached, so create a new Response instance
+            // and return it
+            $response = new Response();
             $response->setContent(
                 $this->_processor->process($cachedResponse)
             );
@@ -131,6 +133,8 @@ class HttpGatewayCache implements CacheAware, ProcessorAware
      * This method caches the response. It needs the application instance to be
      * registered before its execution.
      *
+     * @param \Zend\Mvc\MvcEvent $e
+     *
      * @return \Zend\Http\PhpEnvironment\Response
      */
     public function postDispatch(MvcEvent $e)
@@ -138,13 +142,8 @@ class HttpGatewayCache implements CacheAware, ProcessorAware
         // Here we have a full generated response, so replace ESI parts,
         // cache the response, and go on.
         if (!$this->getResponseCached()) {
-            if ($e->getResult() instanceof \Zend\Http\PhpEnvironment\Response) {
-                $response = $e->getResult();
-            } else {
-                $response = $this->_application->getResponse();
-            }
-
-            $request = $this->_application->getRequest();
+            $response = $e->getResponse();
+            $request = $e->getRequest();
             $content = $response->getContent();
 
             // Get the "Cache-control". This
