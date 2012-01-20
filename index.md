@@ -18,7 +18,7 @@ the page. The current implementation only supports the &lt;esi:include /&gt; tag
 
 ## Where?
 
-<a href="https://github.com/Emagister/HttpGatewayCacheModule/zipball/master" class="button big icon fork">Download from Github!</a>
+<a href="https://github.com/Emagister/HttpGatewayCacheModule/raw/master/HttpGatewayCacheModule.phar" class="button big icon fork">Download from Github!</a>
 
 ## How to use it?
 
