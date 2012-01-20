@@ -22,7 +22,7 @@ the page. The current implementation only supports the &lt;esi:include /&gt; tag
 
 ###Install it
 
-You can clone it or download it to your "module" directory.
+You can clone it or download it to your "vendor" directory (you can add it as a submodule).
 
 ```bash
 $ cd /your/zend/framework/app/module
