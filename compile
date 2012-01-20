@@ -2,7 +2,6 @@
 <?php
 
 // Compile the HttpGatewayCacheModule
-ini_set('phar.readonly', 0);
 !file_exists('./HttpGatewayCacheModule.phar') ?: unlink('./HttpGatewayCacheModule.phar');
 
 $phar = new \Phar('HttpGatewayCacheModule.phar', 0, 'HttpGatewayCacheModule.phar');
