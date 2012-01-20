@@ -25,7 +25,7 @@ the page. The current implementation only supports the &lt;esi:include /&gt; tag
 You can clone it or download it to your "vendor" directory (you can add it as a submodule).
 
 ```bash
-$ cd /your/zend/framework/app/module
+$ cd /your/zend/framework/app/vendor
 $ git clone https://github.com/Emagister/HttpGatewayCacheModule
 ```
 
