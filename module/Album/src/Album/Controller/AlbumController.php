@@ -43,7 +43,6 @@ class AlbumController extends ActionController
             }
         }
 
-        $this->getEvent()->getResponse()->headers()->addHeaderLine('Cache-control: max-age=1800');
         return array('form' => $form);
 
     }
@@ -101,11 +100,8 @@ class AlbumController extends ActionController
 
     public function esiAction()
     {
-        $response = new \Zend\Http\PhpEnvironment\Response();
-        $response->headers()->addHeaderLine('Cache-control: max-age=3600');
-        $response->setContent($this->getLocator()->get('view')->render('album/esi.phtml'));
-
-        return $response;
+        $this->getEvent()->getResponse()->headers()->addHeaderLine('Cache-control: max-age=3600');
+        $this->getLocator()->get('view')->layout()->disableLayout();
     }
 
     public function setAlbums(AlbumTable $albumTable)

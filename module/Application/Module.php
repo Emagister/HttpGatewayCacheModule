@@ -3,8 +3,8 @@
 namespace Application;
 
 use Zend\Module\Manager,
-    Zend\EventManager\StaticEventManager,
-    Zend\Module\Consumer\AutoloaderProvider;
+Zend\EventManager\StaticEventManager,
+Zend\Module\Consumer\AutoloaderProvider;
 
 class Module implements AutoloaderProvider
 {
@@ -35,7 +35,7 @@ class Module implements AutoloaderProvider
     {
         return include __DIR__ . '/config/module.config.php';
     }
-    
+
     public function initializeView($e)
     {
         $app          = $e->getParam('application');
@@ -67,22 +67,24 @@ class Module implements AutoloaderProvider
             return $this->view;
         }
 
-        $di     = $app->getLocator();
-        $view   = $di->get('view');
-        $url    = $view->plugin('url');
+        $locator = $app->getLocator();
+        $view    = $locator->get('view');
+        $url     = $view->plugin('url');
         $url->setRouter($app->getRouter());
 
+        $view->plugin('doctype')->setDoctype('HTML5');
+
         $view->plugin('headTitle')->setSeparator(' - ')
-                                  ->setAutoEscape(false)
-                                  ->append('ZF2 Skeleton Application');
+            ->setAutoEscape(false)
+            ->append('ZF2 Skeleton Application');
 
-        $basePath = $app->getRequest()->detectBaseUrl();
+        $basePath = $app->getRequest()->getBaseUrl();
 
-        $view->plugin('headLink')->appendStylesheet($basePath . 'css/bootstrap.min.css');
+        $view->plugin('headLink')->appendStylesheet($basePath . '/css/bootstrap.min.css');
 
-        $html5js = '<script src="' . $basePath . 'js/html5.js"></script>';
+        $html5js = '<script src="' . $basePath . '/js/html5.js"></script>';
         $view->plugin('placeHolder')->__invoke('html5js')->set($html5js);
-        $favicon = '<link rel="shortcut icon" href="' . $basePath . 'images/favicon.ico">';
+        $favicon = '<link rel="shortcut icon" href="' . $basePath . '/images/favicon.ico">';
         $view->plugin('placeHolder')->__invoke('favicon')->set($favicon);
 
         $this->view = $view;
