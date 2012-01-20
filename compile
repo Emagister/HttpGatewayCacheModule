@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+
+// Compile the HttpGatewayCacheModule
+ini_set('phar.readonly', 0);
+!file_exists('./HttpGatewayCacheModule.phar') ?: unlink('./HttpGatewayCacheModule.phar');
+
+$phar = new \Phar('HttpGatewayCacheModule.phar', 0, 'HttpGatewayCacheModule.phar');
+$phar->setSignatureAlgorithm(\Phar::SHA1);
+
+$phar->startBuffering();
+
+$phar->addFromString('autoload_classmap.php', file_get_contents('./autoload_classmap.php'));
+$phar->addFromString('Module.php', file_get_contents('./Module.php'));
+$phar->addFromString('config/module.config.php', file_get_contents('./config/module.config.php'));
+$phar->addFromString('src/Emagister/CacheAware.php', file_get_contents('./src/Emagister/CacheAware.php'));
+$phar->addFromString('src/Emagister/HttpGatewayCache.php', file_get_contents('./src/Emagister/HttpGatewayCache.php'));
+$phar->addFromString('src/Emagister/ProcessorAware.php', file_get_contents('./src/Emagister/ProcessorAware.php'));
+$phar->addFromString('src/Emagister/Esi/Processor.php', file_get_contents('./src/Emagister/Esi/Processor.php'));
+$phar->addFromString('src/Emagister/View/Helper/Esi.php', file_get_contents('./src/Emagister/View/Helper/Esi.php'));
+
+$phar->setStub(<<<'EOF'
+<?php
+__HALT_COMPILER();
+EOF
+);
+
+$phar->stopBuffering();
+unset($phar);
