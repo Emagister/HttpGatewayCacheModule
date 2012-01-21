@@ -88,8 +88,9 @@ class Module implements AutoloaderProvider
     {
         $di = $this->_application->getLocator();
         $httpGatewayCache = $di->get('emagister_httpgatewaycache');
+        $httpGatewayCache->setApplication($this->_application);
 
-        $response = $httpGatewayCache->preDispatch($this->_application);
+        $response = $httpGatewayCache->preDispatch($e);
         if (null !== $response) {
             // We should return here the response back to the client
             $e->setResponse($response);
