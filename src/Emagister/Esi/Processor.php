@@ -1,21 +1,14 @@
 <?php
 
-namespace Emagister\Esi;
-
-use Zend\Http\PhpEnvironment\Request,
-    Zend\Http\PhpEnvironment\Response,
-    Zend\Stdlib\RequestDescription,
-    Zend\Mvc\AppContext,
-    Zend\Mvc\MvcEvent;
-
 /**
  * An ESI tag processor
  *
+ * @category Networking
  * @package Emagister
  * @subpackage Esi
  * @author Christian Soronellas <csoronellas@emagister.com>
  */
-class Processor
+class Emagister_Esi_Processor
 {
     /**
      * The internal Request

@@ -1,33 +1,18 @@
 <?php
 
 /**
- * @namespace
- */
-namespace Emagister;
-use Zend\Cache\Storage\Adapter as CacheAdapter,
-    Zend\Stdlib\RequestDescription,
-    Zend\Http\Header\CacheControl,
-    Zend\Mvc\AppContext,
-    Zend\Mvc\MvcEvent,
-    Zend\Http\PhpEnvironment\Response;
-
-/**
- * A reverse proxy cache written on top of Zend Framework 2
+ * A reverse proxy cache written on top of Zend Framework
  *
- * @uses       \Zend\Stdlib\RequestDescription
- * @uses       \Zend\Cache\Storage\Adapter
- * @uses       \Zend\Cache\Storage
- * @uses       \Zend\Mvc\AppContext
- * @uses       \Emagister\Esi\Processor
+ * @category   Networking
  * @package    Emagister
  * @author     Christian Soronellas <csoronellas@emagister.com>
  */
-class HttpGatewayCache implements CacheAware, ProcessorAware
+class Emagister_HttpGatewayCache extends Zend_Controller_Plugin_Abstract
 {
     /**
      * The cache object instance
      *
-     * @var \Zend\Cache\Storage\Adapter
+     * @var Zend_Cache_Core
      */
     protected $_cache;
 
@@ -39,51 +24,22 @@ class HttpGatewayCache implements CacheAware, ProcessorAware
     protected $_responseCached = false;
 
     /**
-     * The application instance
-     *
-     * @var \Zend\Mvc\AppContext
-     */
-    protected $_application;
-
-    /**
      * An ESI processor instance
      *
-     * @var \Emagister\Esi\Processor
+     * @var Emagister_Esi_Processor
      */
     protected $_processor;
 
     /**
-     * @return \Zend\Mvc\AppContext
+     * Class constructor
+     *
+     * @param Zend_Cache_Core $cache
+     * @param Emagister_Esi_Processor $processor
      */
-    public function getApplication()
+    public function __construct(Zend_Cache_Core $cache, Emagister_Esi_Processor $processor)
     {
-        return $this->_application;
-    }
-
-    /**
-     * @param \Zend\Mvc\AppContext $application
-     */
-    public function setApplication(AppContext $application)
-    {
-        $this->_application = $application;
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see \Emagister\CacheAware::injectCache()
-     */
-    public function injectCache(\Zend\Cache\Storage\Adapter $cache)
-    {
-        $this->_cache = $cache;
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see \Emagister\ProcessorAware::injectProcessor()
-     */
-    public function injectProcessor(Esi\Processor $processor)
-    {
-        $this->_processor = $processor;
+        $this->setCache($cache);
+        $this->setProcessor($processor);
     }
 
     /**
@@ -100,6 +56,38 @@ class HttpGatewayCache implements CacheAware, ProcessorAware
     public function setResponseCached($responseCached)
     {
         $this->_responseCached = (bool) $responseCached;
+    }
+
+    /**
+     * @param \Zend_Cache_Core $cache
+     */
+    public function setCache($cache)
+    {
+        $this->_cache = $cache;
+    }
+
+    /**
+     * @return \Zend_Cache_Core
+     */
+    public function getCache()
+    {
+        return $this->_cache;
+    }
+
+    /**
+     * @param \Emagister_Esi_Processor $processor
+     */
+    public function setProcessor($processor)
+    {
+        $this->_processor = $processor;
+    }
+
+    /**
+     * @return \Emagister_Esi_Processor
+     */
+    public function getProcessor()
+    {
+        return $this->_processor;
     }
 
 	/**

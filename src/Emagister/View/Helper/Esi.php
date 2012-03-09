@@ -1,11 +1,6 @@
 <?php
 
-namespace Emagister\View\Helper;
-
-use Zend\View\Helper\AbstractHelper,
-    Zend\View\Helper\Action as ActionHelper;
-
-class Esi extends AbstractHelper
+class Emagister_View_Helper_Esi extends Zend_View_Helper_Abstract
 {
     /**
      * @var \Zend\View\Helper\Action
